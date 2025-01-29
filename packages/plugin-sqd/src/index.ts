@@ -6,7 +6,7 @@ export const sqdPlugin: Plugin = {
     description: "On-chain data lake for AI agents",
     actions: [],
     evaluators: [],
-    providers: [uniswapProvider, erc20Provider],
+    providers: [erc20Provider],
 };
 
 export default sqdPlugin;

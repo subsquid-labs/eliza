@@ -4329,12 +4329,28 @@ importers:
 
   packages/plugin-sqd:
     dependencies:
+      '@abernatskiy/erc20-transfers-jellyfish':
+        specifier: ^0.0.0
+        version: 0.0.0(@abernatskiy/http-client@9.0.0)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)
+      '@abernatskiy/http-client':
+        specifier: ^9.0.0
+        version: 9.0.0
+      '@abernatskiy/portal-client':
+        specifier: ^9.0.0
+        version: 9.0.0(@abernatskiy/http-client@9.0.0)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)
       '@elizaos/core':
         specifier: workspace:*
         version: link:../core
       tsup:
         specifier: 8.3.5
         version: 8.3.5(@swc/core@1.10.11(@swc/helpers@0.5.15))(jiti@2.4.2)(postcss@8.5.1)(tsx@4.19.2)(typescript@5.7.3)(yaml@2.7.0)
+      zod:
+        specifier: 3.23.8
+        version: 3.23.8
+    devDependencies:
+      typescript:
+        specifier: ^5.7.3
+        version: 5.7.3
 
   packages/plugin-squid-router:
     dependencies:
@@ -4900,6 +4916,58 @@ packages:
 
   '@3land/listings-sdk@0.0.7':
     resolution: {integrity: sha512-7hEgqBcYFTF15OzXKliG8JuO3SKKDTkFZDgyldxXwPX/HSwvVEGjnX+LorGDhhWt/9YazV7K5iEC3qyeuqibIA==}
+
+  '@abernatskiy/erc20-transfers-jellyfish@0.0.0':
+    resolution: {integrity: sha512-SZoGPRSJ48ICq5FxuFRjlPePvJWg0T+VOSfPNu8hoiRAeJf6JR+6oVW9Ag34+erLr9TqXUb5OrwOz2T99cVjeQ==}
+
+  '@abernatskiy/evm-stream@9.0.0':
+    resolution: {integrity: sha512-Mo/7QnDyRy8nRPRbB+oXOITbo6cRhaycrVJUZvoOXg6l5lhdBOEDO0vgBcw+uQ6VD8EOFkgVMF1guu87oG6lvA==}
+
+  '@abernatskiy/http-client@9.0.0':
+    resolution: {integrity: sha512-9egcMcHkb/b6aEof2FTiwJSDbwFqmm4pS4HPfMRPrqzxxQ5b99AlJbdRV8ffMSnuaFX1Z7HZSyOZvh6PdJlSbQ==}
+
+  '@abernatskiy/logger@9.0.0':
+    resolution: {integrity: sha512-0LV05EPojj/w7hOQXKWYvQqTFZfZFgvUbIWloSe4n/8YXcTjkwTISIzWTfdK7PYTOsfAPCpiTIDfeCnQTZdnZA==}
+
+  '@abernatskiy/portal-client@9.0.0':
+    resolution: {integrity: sha512-Lm+A0j89GxUeZSrtnF3BbSdDjfkqXQU3e6LLMslgtoJ8BQ7j+Gw1itKkyqymvvr9N/0jaEr1dJQOTlymrz6xNA==}
+    peerDependencies:
+      '@abernatskiy/http-client': ^9.0.0
+      '@abernatskiy/logger': ^9.0.0
+      '@subsquid/logger': '*'
+    peerDependenciesMeta:
+      '@subsquid/logger':
+        optional: true
+
+  '@abernatskiy/util-internal-binary-heap@9.0.0':
+    resolution: {integrity: sha512-3u7yk64qnf53YaJyexwSTM5zqQzLkGPgGDhW2uoFZ43O8iitdGUATinS/fGLfj3EeKP1bRda1MKcow/nQYVWZA==}
+
+  '@abernatskiy/util-internal-hex@9.0.0':
+    resolution: {integrity: sha512-03Y4YITbYKZQItQczG7FgY4C/mwryc4FORHWmYz4YFa7aC2PkPIME79OX3VkUA5jsrB9OvJYMG8fU6VNll0IdQ==}
+
+  '@abernatskiy/util-internal-json@9.0.0':
+    resolution: {integrity: sha512-XDSHzP3/WJTnqGm8wy/ya9uD7wKVwUk4Jg+BaE9eh9ysFSQEbr7C5nap+ies6T3jl8Xi3P1KzdXyCiZsQN0mCg==}
+
+  '@abernatskiy/util-internal-range@9.0.0':
+    resolution: {integrity: sha512-P/N4H/iFcNc0fihp9egXxckjLeLVjBSa/2kNUycT9dDmutZMtA6JyjUWfU5g9TT3bgplPRM4Ybrn96a23nnHYw==}
+
+  '@abernatskiy/util-internal-validation@9.0.0':
+    resolution: {integrity: sha512-EpDhy0R2/e/47Dnpi2g7jS/utTHKRh8xYtMKJ/dnJyx0B93dAbu32ExDI1YHq7JaYzVx6cG2ZeuJGY95UUuFnw==}
+    peerDependencies:
+      '@abernatskiy/logger': ^9.0.0
+      '@subsquid/logger': '*'
+    peerDependenciesMeta:
+      '@subsquid/logger':
+        optional: true
+
+  '@abernatskiy/util-internal@9.0.0':
+    resolution: {integrity: sha512-G8hMf4f9pG0vgG7JZHzdqmAIvj0umTSR4JI8STn6dJGZEWoF196clDsgsIk/k7W82h06akXjG6kQYBDNc9WqfQ==}
+
+  '@abernatskiy/util-timeout@9.0.0':
+    resolution: {integrity: sha512-GY38Jghnxx45UMGJOflC9dIoKjnCMJqlZKiQgax5L42QoRcfNM92WmmXoSojqNTPxNdhw5o4XAmHmQVUVfBx2g==}
+
+  '@abernatskiy/util-types@9.0.0':
+    resolution: {integrity: sha512-moogbNzUGQouq6RE0LZPon2X9u5mtSAzpCqpFQzByaAt4jLYLmzzyNOJQCWkj5FN7OlFpn8f7m3aoQY8ycAZ9g==}
 
   '@abstract-foundation/agw-client@1.0.1':
     resolution: {integrity: sha512-ZJEC2siysQz9FdnWs6xFDY9vuIV+5E01nUFgv/Kvw2mRmf148T7H99SoelN2o8qCmv1r3z2iWQCLCLTa5f3FtQ==}
@@ -12729,6 +12797,32 @@ packages:
 
   '@story-protocol/core-sdk@1.2.0-rc.3':
     resolution: {integrity: sha512-mZMQgYvMfr5ysvql3DWADwS4RqxtjZnLT7IGvP/haoZgNds8++6uUNGRBzItYGj/ejZQtYSVTyMUoE+a78zArQ==}
+
+  '@subsquid/evm-abi@0.3.1':
+    resolution: {integrity: sha512-kWD8KjPBj4bR7u2Ct0xZmmVVkto0DKbSv9LQoh3fdGpS1UXbMg1jt4idupd970U8O7u3JJoTosgtApaXbKfoig==}
+
+  '@subsquid/evm-codec@0.3.0':
+    resolution: {integrity: sha512-W6EIiC7MJN2oWdbgzpUSDop+UtROdFAlvsrzc10g3AnCAaK31nH59tkTjylRxgECewWFCFWZrwsVp+a+lwvXMA==}
+
+  '@subsquid/util-internal-archive-layout@1.0.0':
+    resolution: {integrity: sha512-Foy6H5Ui7tX0zKVfMcnhxOsVJ23RzyhK5URcmbPWrxj1qe7B7XFspIcFpM7IA5sLIHnUkNLOVH6Dg5sSYyVjmw==}
+    peerDependencies:
+      '@subsquid/util-internal-fs': ^0.2.0
+
+  '@subsquid/util-internal-binary-heap@1.0.0':
+    resolution: {integrity: sha512-88auuc8yNFmCZugmJSTYzS7WM/nN2obKGQCgrl8Jty5rJUFbqazGSi8icqftKhv6MPtUMJ3PSTRLiTFXAUGnAA==}
+
+  '@subsquid/util-internal-fs@0.2.0':
+    resolution: {integrity: sha512-WwFSPDZB9TkB4s+BpVXorHeUI90hhguNsyipt3Sgp0KFtmZvQu4mnM8pbLj9k2ZmLGt20OS0mPGSr/Qwz++5ww==}
+
+  '@subsquid/util-internal-hex@1.2.2':
+    resolution: {integrity: sha512-E43HVqf23jP5hvtWF9GsiN8luANjnJ1daR2SVTwaIUAYU/uNjv1Bi6tHz2uexlflBhyxAgBDmHgunXZ45wQTIw==}
+
+  '@subsquid/util-internal-range@0.3.0':
+    resolution: {integrity: sha512-5/oDNW0TS66o4vWRzYSYXEfNnFRZsAzoi4pZNdPn7n1l+xV7ZTa0Y57XA6cP5hrWCaIYav4z1zECPngLDV/qeQ==}
+
+  '@subsquid/util-internal@3.2.0':
+    resolution: {integrity: sha512-foNCjOmZaP8MKMa9sNe2GXTjFSDM9UqA0I0C0/ZvCxM1lCmG3mxZb70f8Wyi7TePXC/eV8eARbIqFyz0GjQmzA==}
 
   '@substrate/connect-extension-protocol@2.2.1':
     resolution: {integrity: sha512-GoafTgm/Jey9E4Xlj4Z5ZBt/H4drH2CNq8VrAro80rtoznrXnFDNVivLQzZN0Xaj2g8YXSn9pC9Oc9IovYZJXw==}
@@ -28389,6 +28483,77 @@ snapshots:
       - supports-color
       - typescript
       - utf-8-validate
+
+  '@abernatskiy/erc20-transfers-jellyfish@0.0.0(@abernatskiy/http-client@9.0.0)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)':
+    dependencies:
+      '@abernatskiy/evm-stream': 9.0.0(@subsquid/util-internal-fs@0.2.0)
+      '@abernatskiy/portal-client': 9.0.0(@abernatskiy/http-client@9.0.0)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)
+      '@abernatskiy/util-internal-range': 9.0.0
+      '@abernatskiy/util-types': 9.0.0
+      '@subsquid/evm-abi': 0.3.1
+    transitivePeerDependencies:
+      - '@abernatskiy/http-client'
+      - '@abernatskiy/logger'
+      - '@subsquid/logger'
+      - '@subsquid/util-internal-fs'
+
+  '@abernatskiy/evm-stream@9.0.0(@subsquid/util-internal-fs@0.2.0)':
+    dependencies:
+      '@abernatskiy/http-client': 9.0.0
+      '@abernatskiy/logger': 9.0.0
+      '@abernatskiy/portal-client': 9.0.0(@abernatskiy/http-client@9.0.0)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)
+      '@abernatskiy/util-internal': 9.0.0
+      '@abernatskiy/util-internal-range': 9.0.0
+      '@abernatskiy/util-internal-validation': 9.0.0(@abernatskiy/logger@9.0.0)
+    transitivePeerDependencies:
+      - '@subsquid/logger'
+      - '@subsquid/util-internal-fs'
+
+  '@abernatskiy/http-client@9.0.0':
+    dependencies:
+      '@abernatskiy/logger': 9.0.0
+      '@abernatskiy/util-internal': 9.0.0
+      '@abernatskiy/util-timeout': 9.0.0
+
+  '@abernatskiy/logger@9.0.0':
+    dependencies:
+      '@abernatskiy/util-internal-hex': 9.0.0
+      '@abernatskiy/util-internal-json': 9.0.0
+      supports-color: 8.1.1
+
+  '@abernatskiy/portal-client@9.0.0(@abernatskiy/http-client@9.0.0)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)':
+    dependencies:
+      '@abernatskiy/http-client': 9.0.0
+      '@abernatskiy/logger': 9.0.0
+      '@abernatskiy/util-internal': 9.0.0
+      '@abernatskiy/util-internal-range': 9.0.0
+      '@abernatskiy/util-timeout': 9.0.0
+      '@subsquid/util-internal-archive-layout': 1.0.0(@subsquid/util-internal-fs@0.2.0)
+    transitivePeerDependencies:
+      - '@subsquid/util-internal-fs'
+
+  '@abernatskiy/util-internal-binary-heap@9.0.0': {}
+
+  '@abernatskiy/util-internal-hex@9.0.0': {}
+
+  '@abernatskiy/util-internal-json@9.0.0':
+    dependencies:
+      '@abernatskiy/util-internal-hex': 9.0.0
+
+  '@abernatskiy/util-internal-range@9.0.0':
+    dependencies:
+      '@abernatskiy/util-internal': 9.0.0
+      '@abernatskiy/util-internal-binary-heap': 9.0.0
+
+  '@abernatskiy/util-internal-validation@9.0.0(@abernatskiy/logger@9.0.0)':
+    dependencies:
+      '@abernatskiy/logger': 9.0.0
+
+  '@abernatskiy/util-internal@9.0.0': {}
+
+  '@abernatskiy/util-timeout@9.0.0': {}
+
+  '@abernatskiy/util-types@9.0.0': {}
 
   '@abstract-foundation/agw-client@1.0.1(abitype@1.0.8(typescript@4.9.5)(zod@3.24.1))(typescript@4.9.5)(viem@2.21.58(bufferutil@4.0.9)(typescript@4.9.5)(utf-8-validate@6.0.5)(zod@3.24.1))':
     dependencies:
@@ -44696,6 +44861,40 @@ snapshots:
       - typescript
       - utf-8-validate
       - zod
+
+  '@subsquid/evm-abi@0.3.1':
+    dependencies:
+      '@subsquid/evm-codec': 0.3.0
+      keccak256: 1.0.6
+
+  '@subsquid/evm-codec@0.3.0':
+    dependencies:
+      '@subsquid/util-internal-hex': 1.2.2
+
+  '@subsquid/util-internal-archive-layout@1.0.0(@subsquid/util-internal-fs@0.2.0)':
+    dependencies:
+      '@subsquid/util-internal': 3.2.0
+      '@subsquid/util-internal-fs': 0.2.0
+      '@subsquid/util-internal-hex': 1.2.2
+      '@subsquid/util-internal-range': 0.3.0
+
+  '@subsquid/util-internal-binary-heap@1.0.0': {}
+
+  '@subsquid/util-internal-fs@0.2.0':
+    dependencies:
+      '@aws-sdk/client-s3': 3.735.0
+      upath: 2.0.1
+    transitivePeerDependencies:
+      - aws-crt
+
+  '@subsquid/util-internal-hex@1.2.2': {}
+
+  '@subsquid/util-internal-range@0.3.0':
+    dependencies:
+      '@subsquid/util-internal': 3.2.0
+      '@subsquid/util-internal-binary-heap': 1.0.0
+
+  '@subsquid/util-internal@3.2.0': {}
 
   '@substrate/connect-extension-protocol@2.2.1':
     optional: true

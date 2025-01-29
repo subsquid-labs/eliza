@@ -25,7 +25,12 @@ class Erc20Provider implements Provider {
         const latestMessage = state.recentMessagesData.at(-1).content.text;
         const extractionPrompt = getErc20ExtractionPrompt(latestMessage);
 
+        elizaLogger;
         try {
+            const transfers = await JellyfishService.fetchErc20Transfers();
+
+            console.log("ERC20 SQD PROVIDER TRANSFERS ==> ", transfers);
+
             // Casting object to Erc20TransferParams to get the type since the generateObject
             // doesn't use the schema to infer the type and returns the unknown for the object
             const { object } = (await generateObject({
@@ -39,8 +44,9 @@ class Erc20Provider implements Provider {
 
             elizaLogger.info("ERC20 EXTRACTED PARAMS: ", queryParams);
 
-            return JellyfishService.fetchErc20Transfers(queryParams);
+            return JSON.stringify(transfers);
         } catch (error) {
+            console.log("ERC20 SQD PROVIDER ERROR ==> ", error);
             elizaLogger.log(
                 "[ERC20 Transfer Provider]: Unable to extract user data from prompt. Skipping"
             );
@@ -54,6 +60,7 @@ class Erc20Provider implements Provider {
     private validateQueryParams(
         queryParams: Erc20TransferParams
     ): Erc20TransferParams {
+        console.log("========== validateQueryParams ========== ", queryParams);
         if (queryParams.from) queryParams.from = getAddress(queryParams.from);
         else queryParams.from = null;
 

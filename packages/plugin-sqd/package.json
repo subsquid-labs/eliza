@@ -11,8 +11,9 @@
         "tsup": "8.3.5",
         "zod": "3.23.8",
         "@abernatskiy/erc20-transfers-jellyfish": "^0.0.0",
-        "@abernatskiy/http-client": "^9.0.0",
-        "@abernatskiy/portal-client": "^9.0.0"
+        "@abernatskiy/http-client": "9.0.1",
+        "@abernatskiy/portal-client": "^9.0.0",
+        "@abernatskiy/uniswapv3-pool-swaps": "^0.0.0"
     },
     "devDependencies": {
         "typescript": "^5.7.3"

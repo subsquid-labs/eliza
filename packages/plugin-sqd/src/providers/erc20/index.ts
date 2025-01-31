@@ -9,9 +9,8 @@ import {
 } from "@elizaos/core";
 import { getErc20ExtractionPrompt } from "./extraction-prompt";
 import { getAddress } from "viem";
-import { isoToUnixEpoch } from "../../utils";
 import { Erc20TransferParams, Erc20TransferParamsSchema } from "../../types";
-import { JellyfishService } from "../../services";
+import { Erc20JellyfishService, Erc20Transfer } from "../../services";
 
 /**
  * Provider that retrieves ERC20 transfer data based on user prompt
@@ -25,12 +24,7 @@ class Erc20Provider implements Provider {
         const latestMessage = state.recentMessagesData.at(-1).content.text;
         const extractionPrompt = getErc20ExtractionPrompt(latestMessage);
 
-        elizaLogger;
         try {
-            const transfers = await JellyfishService.fetchErc20Transfers();
-
-            console.log("ERC20 SQD PROVIDER TRANSFERS ==> ", transfers);
-
             // Casting object to Erc20TransferParams to get the type since the generateObject
             // doesn't use the schema to infer the type and returns the unknown for the object
             const { object } = (await generateObject({
@@ -42,14 +36,14 @@ class Erc20Provider implements Provider {
 
             const queryParams = this.validateQueryParams(object);
 
-            elizaLogger.info("ERC20 EXTRACTED PARAMS: ", queryParams);
+            elizaLogger.debug("ERC20 Query params", queryParams);
 
-            return JSON.stringify(transfers);
-        } catch (error) {
-            console.log("ERC20 SQD PROVIDER ERROR ==> ", error);
-            elizaLogger.log(
-                "[ERC20 Transfer Provider]: Unable to extract user data from prompt. Skipping"
+            const transfers = await new Erc20JellyfishService().fetchData(
+                queryParams
             );
+
+            return this.formatOutput(transfers);
+        } catch (error) {
             elizaLogger.debug(
                 "[ERC20 Transfer Provider]: Found error while parsing user prompt",
                 error
@@ -60,24 +54,40 @@ class Erc20Provider implements Provider {
     private validateQueryParams(
         queryParams: Erc20TransferParams
     ): Erc20TransferParams {
-        console.log("========== validateQueryParams ========== ", queryParams);
-        if (queryParams.from) queryParams.from = getAddress(queryParams.from);
+        if (queryParams.from)
+            queryParams.from = getAddress(queryParams.from).toLowerCase();
         else queryParams.from = null;
 
-        if (queryParams.to) queryParams.to = getAddress(queryParams.to);
+        if (queryParams.to)
+            queryParams.to = getAddress(queryParams.to).toLowerCase();
         else queryParams.to = null;
 
-        if (queryParams.startTimestamp)
-            queryParams.startTimestamp = isoToUnixEpoch(
-                queryParams.startTimestamp
-            );
-        else queryParams.startTimestamp = null;
+        if (queryParams.startBlock)
+            queryParams.startBlock = queryParams.startBlock;
+        else queryParams.startBlock = null;
 
-        if (queryParams.endTimestamp)
-            queryParams.endTimestamp = isoToUnixEpoch(queryParams.endTimestamp);
-        else queryParams.endTimestamp = null;
+        if (queryParams.endBlock) queryParams.endBlock = queryParams.endBlock;
+        else queryParams.endBlock = null;
+
+        if (queryParams.contractAddress)
+            queryParams.contractAddress = getAddress(
+                queryParams.contractAddress
+            ).toLowerCase();
+        else queryParams.contractAddress = null;
 
         return queryParams;
+    }
+
+    private formatOutput(transfers: Erc20Transfer[]) {
+        return (
+            "ERC20 TRANSFERS" +
+            "\n" +
+            "```json" +
+            "\n" +
+            JSON.stringify(transfers) +
+            "\n" +
+            "```"
+        );
     }
 }
 

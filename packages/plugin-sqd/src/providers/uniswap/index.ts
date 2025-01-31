@@ -8,9 +8,9 @@ import {
     elizaLogger,
 } from "@elizaos/core";
 import { getUniswapExtractionPrompt } from "./extraction-prompt";
-import { isoToUnixEpoch } from "../../utils";
 import { UniswapSwapParams, UniswapSwapParamsSchema } from "../../types";
-import { JellyfishService } from "../../services";
+import { Swap, UniswapJellyfishService } from "../../services";
+import { getAddress } from "viem";
 
 /**
  * Provider that retrieves Uniswap swap data based on user prompt
@@ -36,9 +36,13 @@ class UniswapProvider implements Provider {
 
             const queryParams = this.validateQueryParams(object);
 
-            elizaLogger.info("UNISWAP EXTRACTED PARAMS: ", queryParams);
+            elizaLogger.debug("ERC20 Query params", queryParams);
 
-            return JellyfishService.fetchUniswapSwaps(queryParams);
+            const swaps = await new UniswapJellyfishService().fetchData(
+                queryParams
+            );
+
+            return this.formatOutput(swaps);
         } catch (error) {
             elizaLogger.log(
                 "[Uniswap Swaps Provider]: Unable to extract user data from prompt. Skipping"
@@ -53,13 +57,29 @@ class UniswapProvider implements Provider {
     private validateQueryParams(
         queryParams: UniswapSwapParams
     ): UniswapSwapParams {
-        if (queryParams.startTimestamp)
-            queryParams.startTimestamp = isoToUnixEpoch(
-                queryParams.startTimestamp
-            );
-        if (queryParams.endTimestamp)
-            queryParams.endTimestamp = isoToUnixEpoch(queryParams.endTimestamp);
+        if (queryParams.startBlock)
+            queryParams.startBlock = Number(queryParams.startBlock);
+        if (queryParams.endBlock)
+            queryParams.endBlock = Number(queryParams.endBlock);
+
+        if (queryParams.poolAddress)
+            queryParams.poolAddress = getAddress(
+                queryParams.poolAddress
+            ).toLowerCase();
+
         return queryParams;
+    }
+
+    private formatOutput(swaps: Swap[]) {
+        return (
+            "UNISWAP SWAPS" +
+            "\n" +
+            "```json" +
+            "\n" +
+            JSON.stringify(swaps) +
+            "\n" +
+            "```"
+        );
     }
 }
 

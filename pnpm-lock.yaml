@@ -4331,13 +4331,16 @@ importers:
     dependencies:
       '@abernatskiy/erc20-transfers-jellyfish':
         specifier: ^0.0.0
-        version: 0.0.0(@abernatskiy/http-client@9.0.0)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)
+        version: 0.0.0(@abernatskiy/http-client@9.0.1)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)
       '@abernatskiy/http-client':
-        specifier: ^9.0.0
-        version: 9.0.0
+        specifier: 9.0.1
+        version: 9.0.1
       '@abernatskiy/portal-client':
         specifier: ^9.0.0
-        version: 9.0.0(@abernatskiy/http-client@9.0.0)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)
+        version: 9.0.0(@abernatskiy/http-client@9.0.1)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)
+      '@abernatskiy/uniswapv3-pool-swaps':
+        specifier: ^0.0.0
+        version: 0.0.0(@abernatskiy/http-client@9.0.1)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)
       '@elizaos/core':
         specifier: workspace:*
         version: link:../core
@@ -4923,8 +4926,8 @@ packages:
   '@abernatskiy/evm-stream@9.0.0':
     resolution: {integrity: sha512-Mo/7QnDyRy8nRPRbB+oXOITbo6cRhaycrVJUZvoOXg6l5lhdBOEDO0vgBcw+uQ6VD8EOFkgVMF1guu87oG6lvA==}
 
-  '@abernatskiy/http-client@9.0.0':
-    resolution: {integrity: sha512-9egcMcHkb/b6aEof2FTiwJSDbwFqmm4pS4HPfMRPrqzxxQ5b99AlJbdRV8ffMSnuaFX1Z7HZSyOZvh6PdJlSbQ==}
+  '@abernatskiy/http-client@9.0.1':
+    resolution: {integrity: sha512-z8Jq1yi8knyBOEJGvpKTTIqZ0uesrtYyHk/WYVAtNd93IZIAd5rGqPHClAwz1AM6cVvjdmLXVdDhq+NkGZNrZg==}
 
   '@abernatskiy/logger@9.0.0':
     resolution: {integrity: sha512-0LV05EPojj/w7hOQXKWYvQqTFZfZFgvUbIWloSe4n/8YXcTjkwTISIzWTfdK7PYTOsfAPCpiTIDfeCnQTZdnZA==}
@@ -4938,6 +4941,9 @@ packages:
     peerDependenciesMeta:
       '@subsquid/logger':
         optional: true
+
+  '@abernatskiy/uniswapv3-pool-swaps@0.0.0':
+    resolution: {integrity: sha512-DKyMCmCDme9O0w6yz3YdUesh6HCi99TrHo6e4902l0FRWwcJX+cP2xK0fmrqeBEjgxPkX77C678Zf5mLtLNkqg==}
 
   '@abernatskiy/util-internal-binary-heap@9.0.0':
     resolution: {integrity: sha512-3u7yk64qnf53YaJyexwSTM5zqQzLkGPgGDhW2uoFZ43O8iitdGUATinS/fGLfj3EeKP1bRda1MKcow/nQYVWZA==}
@@ -28484,10 +28490,10 @@ snapshots:
       - typescript
       - utf-8-validate
 
-  '@abernatskiy/erc20-transfers-jellyfish@0.0.0(@abernatskiy/http-client@9.0.0)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)':
+  '@abernatskiy/erc20-transfers-jellyfish@0.0.0(@abernatskiy/http-client@9.0.1)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)':
     dependencies:
       '@abernatskiy/evm-stream': 9.0.0(@subsquid/util-internal-fs@0.2.0)
-      '@abernatskiy/portal-client': 9.0.0(@abernatskiy/http-client@9.0.0)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)
+      '@abernatskiy/portal-client': 9.0.0(@abernatskiy/http-client@9.0.1)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)
       '@abernatskiy/util-internal-range': 9.0.0
       '@abernatskiy/util-types': 9.0.0
       '@subsquid/evm-abi': 0.3.1
@@ -28499,9 +28505,9 @@ snapshots:
 
   '@abernatskiy/evm-stream@9.0.0(@subsquid/util-internal-fs@0.2.0)':
     dependencies:
-      '@abernatskiy/http-client': 9.0.0
+      '@abernatskiy/http-client': 9.0.1
       '@abernatskiy/logger': 9.0.0
-      '@abernatskiy/portal-client': 9.0.0(@abernatskiy/http-client@9.0.0)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)
+      '@abernatskiy/portal-client': 9.0.0(@abernatskiy/http-client@9.0.1)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)
       '@abernatskiy/util-internal': 9.0.0
       '@abernatskiy/util-internal-range': 9.0.0
       '@abernatskiy/util-internal-validation': 9.0.0(@abernatskiy/logger@9.0.0)
@@ -28509,7 +28515,7 @@ snapshots:
       - '@subsquid/logger'
       - '@subsquid/util-internal-fs'
 
-  '@abernatskiy/http-client@9.0.0':
+  '@abernatskiy/http-client@9.0.1':
     dependencies:
       '@abernatskiy/logger': 9.0.0
       '@abernatskiy/util-internal': 9.0.0
@@ -28521,15 +28527,28 @@ snapshots:
       '@abernatskiy/util-internal-json': 9.0.0
       supports-color: 8.1.1
 
-  '@abernatskiy/portal-client@9.0.0(@abernatskiy/http-client@9.0.0)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)':
+  '@abernatskiy/portal-client@9.0.0(@abernatskiy/http-client@9.0.1)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)':
     dependencies:
-      '@abernatskiy/http-client': 9.0.0
+      '@abernatskiy/http-client': 9.0.1
       '@abernatskiy/logger': 9.0.0
       '@abernatskiy/util-internal': 9.0.0
       '@abernatskiy/util-internal-range': 9.0.0
       '@abernatskiy/util-timeout': 9.0.0
       '@subsquid/util-internal-archive-layout': 1.0.0(@subsquid/util-internal-fs@0.2.0)
     transitivePeerDependencies:
+      - '@subsquid/util-internal-fs'
+
+  '@abernatskiy/uniswapv3-pool-swaps@0.0.0(@abernatskiy/http-client@9.0.1)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)':
+    dependencies:
+      '@abernatskiy/evm-stream': 9.0.0(@subsquid/util-internal-fs@0.2.0)
+      '@abernatskiy/portal-client': 9.0.0(@abernatskiy/http-client@9.0.1)(@abernatskiy/logger@9.0.0)(@subsquid/util-internal-fs@0.2.0)
+      '@abernatskiy/util-internal-range': 9.0.0
+      '@abernatskiy/util-types': 9.0.0
+      '@subsquid/evm-abi': 0.3.1
+    transitivePeerDependencies:
+      - '@abernatskiy/http-client'
+      - '@abernatskiy/logger'
+      - '@subsquid/logger'
       - '@subsquid/util-internal-fs'
 
   '@abernatskiy/util-internal-binary-heap@9.0.0': {}

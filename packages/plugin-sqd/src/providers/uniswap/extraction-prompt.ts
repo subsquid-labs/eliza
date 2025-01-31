@@ -1,49 +1,56 @@
-export const getUniswapExtractionPrompt = (message: string) =>
-    `
-Task
-Extract startTimestamp and endTimestamp (ISO 8601 format) from user queries about Uniswap activity. Output a JSON object with only these two keys.
+export const getUniswapExtractionPrompt = (
+    message: string
+) => `Extract structured information from user queries about Uniswap activity. Output a JSON object with the following keys:
+- startBlock: The earliest block number to consider in the analysis (e.g., 290000000)
+- endBlock: The latest block number to consider in the analysis (e.g., 290010000)
+- poolAddress: The Uniswap V3 pool contract address (e.g., "0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8")
 
-Rules
-1. Convert explicit time references (e.g., "October 1, 2023", "last week") to ISO 8601 strings (e.g., "2023-10-01T00:00:00Z").
-2. Use null if a timestamp is missing, ambiguous, or not explicitly defined.
-3. Ignore all other parameters (pools, tokens, events, etc.).
-4. Response with an empty object if the prompt is unrelated to Uniswap
+Rules:
+1. Output only the JSON object with the specified keys.
+2. Use null for missing or unclear information.
+3. Do not include additional keys or text outside the JSON object.
+4. Response with an empty object if the prompt is unrelated to Uniswap swaps
 
-Examples
+Examples:
 
 Input:
-"Analyze swaps between October 1, 2023 (12:00 AM UTC) and October 31, 2023 (11:59 PM UTC)."
+"Show me all swaps in the Uniswap V3 contract 0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8 between blocks 290000000 and 290010000."
 
 Output:
 \`\`\`json
 {
-  "startTimestamp": "2023-10-01T00:00:00Z",
-  "endTimestamp": "2023-10-31T23:59:59Z"
+  "startBlock": 290000000,
+  "endBlock": 290010000,
+  "poolAddress": "0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8"
 }
 \`\`\`
 
 Input:
-"Give me all trades up to January 1, 2024, at 5 PM UTC."
+"I want to analyze the USDT/USDC pool 0x3416cF6C708Da44DB2624D63ea0AAef7113527C6 swaps starting from block 290005000."
 
 Output:
 \`\`\`json
 {
-  "startTimestamp": null,
-  "endTimestamp": "2024-01-01T17:00:00Z"
+  "startBlock": 290005000,
+  "endBlock": null,
+  "poolAddress": "0x3416cF6C708Da44DB2624D63ea0AAef7113527C6"
 }
 \`\`\`
 
 Input:
-"Everything in the last 7 days."
+"Show me all swaps until block 290008000."
 
 Output:
 \`\`\`json
-{}
+{
+  "startBlock": null,
+  "endBlock": 290008000,
+  "poolAddress": null
+}
 \`\`\`
-Unclear if this is about Uniswap, returning empty object
 
 Input:
-"give me some ERC20 transfers from 0x5f2978c2af6fbd895132231bf9a9ac2c972dc25f to 0x58012c78ce5d955a8fe59792bfdadeef64d966fc"
+"Give me some ERC20 transfers from 0x5f2978c2af6fbd895132231bf9a9ac2c972dc25f to 0x58012c78ce5d955a8fe59792bfdadeef64d966fc"
 
 Output:
 \`\`\`json
@@ -51,14 +58,6 @@ Output:
 \`\`\`
 ERC20 transfers are unrelated to Uniswap dataset, returning empty object
 
----
+Follow these instructions and examples to ensure the output is always a JSON object with the specified keys.
 
-Notes
-- ISO 8601 Format: Always use UTC (denoted by Z) unless a specific timezone is provided (e.g., "2023-10-01T12:00:00+02:00").
-- Ambiguity: Phrases like "recently," "last week," or "the past month" result in null unless paired with explicit dates.
-- Time Precision: Default to 00:00:00Z if only a date (no time) is provided (e.g., "2023-10-01" → "2023-10-01T00:00:00Z").
-
-This version isolates ISO 8601 timestamp extraction for Uniswap activity, ignoring all other parameters.
-
-The message is: ${message}
-`;
+The message is: ${message}`;

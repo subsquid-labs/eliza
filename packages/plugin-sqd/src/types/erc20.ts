@@ -1,10 +1,35 @@
 import { z } from "zod";
+import { Address, Chain } from "viem";
+
+export type Erc20 = Account & Erc20Metadata;
+
+export interface Erc20Metadata {
+    decimals: number;
+    symbol: string;
+}
 
 export const Erc20TransferParamsSchema = z.object({
-    startTimestamp: z.string().nullable(),
-    endTimestamp: z.string().nullable(),
+    startBlock: z.number().nullable(),
+    endBlock: z.number().nullable(),
     from: z.string().nullable(),
     to: z.string().nullable(),
+    contractAddress: z.string().nullable(),
 });
 
 export type Erc20TransferParams = z.infer<typeof Erc20TransferParamsSchema>;
+
+export interface Account {
+    address: Address;
+    chain: Chain;
+}
+
+export type Erc20MetadataMap = Map<Address, Erc20Metadata>;
+
+export interface Erc20MetadataProvider {
+    getTokenInfoFromChain(
+        chain: Chain,
+        tokens: Set<Address>
+    ): Promise<Erc20MetadataMap>;
+
+    getTokenInfo(tokens: Account[]): Promise<Erc20MetadataMap>;
+}

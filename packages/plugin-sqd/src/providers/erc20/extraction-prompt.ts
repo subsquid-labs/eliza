@@ -1,10 +1,10 @@
 export const getErc20ExtractionPrompt = (message: string) =>
-    `
-Extract structured information from user queries about ERC20 events on EVM chains. Output a JSON object with the following keys:
-- startTimestamp: The earliest timestamp to consider in the analysis (e.g., "2023-10-01T00:00:00Z").
-- endTimestamp: The latest timestamp to consider in the analysis (e.g., "2023-10-31T23:59:59Z").
+    `Extract structured information from user queries about ERC20 events on EVM chains. Output a JSON object with the following keys:
+- startBlock: The earliest block number to consider in the analysis (e.g., 290000000).
+- endBlock: The latest block number to consider in the analysis (e.g., 290010000).
 - from: Sender Ethereum address (e.g., "0x123abc...").
 - to: Receiver Ethereum address (e.g., "0x456def...").
+- contractAddress: The ERC20 token contract address (e.g., "0x789ghi...").
 
 Rules:
 1. Output only the JSON object with the specified keys.
@@ -15,76 +15,70 @@ Rules:
 Examples:
 
 Input:
-"Show me the total token transfers from address 0xAbCdEf1234567890AbCdEf1234567890AbCdEf12 to 0xEfGhIj4567890123EfGhIj4567890123EfGhIj45 between October 1, 2023, and October 31, 2023."
+"Show me the total USDC token transfers (0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48) from address 0x5f2978c2af6fbd895132231bf9a9ac2c972dc25f to 0x58012c78ce5d955a8fe59792bfdadeef64d966fc between blocks 290000000 and 290010000."
 
 Output:
 \`\`\`json
 {
-  "startTimestamp": "2023-10-01T00:00:00Z",
-  "endTimestamp": "2023-10-31T23:59:59Z",
+  "startBlock": 290000000,
+  "endBlock": 290010000,
   "from": "0xAbCdEf1234567890AbCdEf1234567890AbCdEf12",
-  "to": "0xEfGhIj4567890123EfGhIj4567890123EfGhIj45"
+  "to": "0xEfGhIj4567890123EfGhIj4567890123EfGhIj45",
+  "contractAddress": "0x123TokenAddress456"
 }
 \`\`\`
 
 Input:
-"I want to see all transfers from 0xAAA000111222333444555666777888999000AAA000 to 0xBBB111222333444555666777888999000BBB111 starting from November 15, 2023."
+"I want to see all DAI (0xDAIcontractAddress) transfers from 0xAAA000111222333444555666777888999000AAA000 to 0xBBB111222333444555666777888999000BBB111 starting from block 290005000."
 
 Output:
 \`\`\`json
 {
-  "startTimestamp": "2023-11-15T00:00:00Z",
-  "endTimestamp": null,
+  "startBlock": 290005000,
+  "endBlock": null,
   "from": "0xAAA000111222333444555666777888999000AAA000",
-  "to": "0xBBB111222333444555666777888999000BBB111"
+  "to": "0xBBB111222333444555666777888999000BBB111",
+  "contractAddress": "0xDAIcontractAddress"
 }
 \`\`\`
 
 Input:
-"Hey, run an analysis of transfers from 0xA1B2C3D4E5F6A1B2C3D4E5F6A1B2C3D4E5F6A1B2C3 to 0xD4E5F6A1B2C3D4E5F6A1B2C3D4E5F6A1B2C3D4E5 until December 31, 2023."
+"Hey, run an analysis of transfers from 0xA1B2C3D4E5F6A1B2C3D4E5F6A1B2C3D4E5F6A1B2C3 to 0xD4E5F6A1B2C3D4E5F6A1B2C3D4E5F6A1B2C3D4E5 until block 290008000."
 
 Output:
 \`\`\`json
 {
-  "startTimestamp": null,
-  "endTimestamp": "2023-12-31T23:59:59Z",
+  "startBlock": null,
+  "endBlock": 290008000,
   "from": "0xA1B2C3D4E5F6A1B2C3D4E5F6A1B2C3D4E5F6A1B2C3",
-  "to": "0xD4E5F6A1B2C3D4E5F6A1B2C3D4E5F6A1B2C3D4E5"
+  "to": "0xD4E5F6A1B2C3D4E5F6A1B2C3D4E5F6A1B2C3D4E5",
+  "contractAddress": null
 }
 \`\`\`
 
 Input:
-"Give me the data for transfers from 0xA1B2C3D4E5F6A1B2C3D4E5F6A1B2C3D4E5F6A1B2C3 to 0xD4E5F6A1B2C3D4E5F6A1B2C3D4E5F6A1B2C3D4E5."
+"Give me the data for token 0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2 transfers from 0xA1B2C3D4E5F6A1B2C3D4E5F6A1B2C3D4E5F6A1B2C3 to 0xD4E5F6A1B2C3D4E5F6A1B2C3D4E5F6A1B2C3D4E5."
 
 Output:
 \`\`\`json
 {
-  "startTimestamp": null,
-  "endTimestamp": null,
+  "startBlock": null,
+  "endBlock": null,
   "from": "0xA1B2C3D4E5F6A1B2C3D4E5F6A1B2C3D4E5F6A1B2C3",
-  "to": "0xD4E5F6A1B2C3D4E5F6A1B2C3D4E5F6A1B2C3D4E5"
-}
-\`\`\`
-
-Output:
-\`\`\`json
-{
-  "timeframe": "1 hour",
-  "from": "0xA1B2C3D4E5F6A1B2C3D4E5F6A1B2C3D4E5F6A1B2C3",
-  "to": "0xD4E5F6A1B2C3D4E5F6A1B2C3D4E5F6A1B2C3D4E5"
+  "to": "0xD4E5F6A1B2C3D4E5F6A1B2C3D4E5F6A1B2C3D4E5",
+  "contractAddress": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
 }
 \`\`\`
 
 Input:
-"Give me all trades up to January 1, 2024, at 5 PM UTC."
+"Give me all trades up to block 290010000."
 
 Output:
 \`\`\`json
 {}
 \`\`\`
-Not related to ERC20 transfers, returning empty object
+Not related to ERC20 transfers, returns empty object
 
 Follow these instructions and examples to ensure the output is always a JSON object with the specified keys.
 
-The message is: ${message}
-`;
+The message is: ${message}`;

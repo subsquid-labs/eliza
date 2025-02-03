@@ -63,10 +63,6 @@ export class UniswapJellyfishService extends BaseJellyfishService<
     }
 
     public async fetchData(params: UniswapSwapParams): Promise<Swap[]> {
-        console.log("=== PARAMS ===");
-        console.log(params);
-        console.log("=== PARAMS ===");
-        // public async fetchData(params: UniswapSwapParams): Promise<Swap[]> {
         const dataRequest: SwapDataRequest = {
             swaps: [
                 {
@@ -80,7 +76,6 @@ export class UniswapJellyfishService extends BaseJellyfishService<
         );
 
         const stream = this.getDataSource(params, dataRequest)
-            // const stream = this.getDataSource(params, dataRequest)
             .getBlockStream(
                 {
                     from: params.startBlock,
@@ -95,9 +90,6 @@ export class UniswapJellyfishService extends BaseJellyfishService<
                             blocks
                                 .filter(this.filterBlock)
                                 .map(async (block) => {
-                                    console.log("=== BLOCK ===");
-                                    console.log(block);
-                                    console.log("=== BLOCK ===");
                                     controller.enqueue(
                                         await this.parseSwaps(block, poolTokens)
                                     );
@@ -110,8 +102,8 @@ export class UniswapJellyfishService extends BaseJellyfishService<
         const processedBlocks: Swap[] = [];
 
         // @ts-ignore
-        for await (let data of stream) {
-            processedBlocks.push(data);
+        for await (const data of stream) {
+            processedBlocks.push(...data);
         }
 
         return processedBlocks;

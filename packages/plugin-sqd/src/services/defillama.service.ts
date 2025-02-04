@@ -16,8 +16,8 @@ const DefillamaResponseSchema = z.object({
 
 // TODO: cache response
 export class DefillamaService implements Erc20MetadataProvider {
-    private static readonly BASEURL = "https://coins.llama.fi";
-    private static readonly PRICES_URL = `${DefillamaService.BASEURL}/prices/current/`;
+    private static readonly BASE_URL = "https://coins.llama.fi";
+    private static readonly PRICES_URL = `${DefillamaService.BASE_URL}/prices/current/`;
 
     public async getTokenInfoFromChain(
         chain: Chain,

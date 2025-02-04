@@ -31,6 +31,7 @@ export interface Erc20Transfer extends TransferEvent {
     symbol: string;
     blockTimestamp: number;
     blockNumber: number;
+    transactionHash: string;
 }
 
 /*
@@ -40,6 +41,7 @@ export class Erc20JellyfishService extends BaseJellyfishService<
     Erc20TransferParams,
     Erc20Transfer[]
 > {
+    private erc20Service: Erc20Service;
     private static readonly FIELDS: Erc20FieldSelection = {
         block: {
             timestamp: true,
@@ -53,8 +55,6 @@ export class Erc20JellyfishService extends BaseJellyfishService<
             address: true,
         },
     };
-
-    private erc20Service: Erc20Service;
 
     constructor() {
         super();
@@ -106,8 +106,8 @@ export class Erc20JellyfishService extends BaseJellyfishService<
         const processedBlocks: Erc20Transfer[] = [];
 
         // @ts-ignore
-        for await (let data of stream) {
-            processedBlocks.push(data);
+        for await (const data of stream) {
+            processedBlocks.push(...data);
         }
 
         return processedBlocks;
@@ -124,6 +124,7 @@ export class Erc20JellyfishService extends BaseJellyfishService<
             address: transfer.address,
             blockTimestamp: block.header.timestamp,
             blockNumber: block.header.number,
+            transactionHash: block.header.hash,
             ...erc20Metadata.get(transfer.address as Address),
         }));
     }

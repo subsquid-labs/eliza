@@ -4,6 +4,7 @@ export const getUniswapExtractionPrompt = (
 - startBlock: The earliest block number to consider in the analysis (e.g., 290000000)
 - endBlock: The latest block number to consider in the analysis (e.g., 290010000)
 - poolAddress: The Uniswap V3 pool contract address (e.g., "0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8")
+- fileFormat: The desired output format, currently only supports "json" or null
 
 Rules:
 1. Output only the JSON object with the specified keys.
@@ -21,19 +22,34 @@ Output:
 {
   "startBlock": 290000000,
   "endBlock": 290010000,
-  "poolAddress": "0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8"
+  "poolAddress": "0x8ad599c3A0ff1De082011EFDDc58f1908eb6e6D8",
+  "fileFormat": null
 }
 \`\`\`
 
 Input:
-"I want to analyze the USDT/USDC pool 0x3416cF6C708Da44DB2624D63ea0AAef7113527C6 swaps starting from block 290005000."
+"I want to analyze the USDT/USDC pool 0x3416cF6C708Da44DB2624D63ea0AAef7113527C6 swaps starting from block 290005000 and save it as json."
 
 Output:
 \`\`\`json
 {
   "startBlock": 290005000,
   "endBlock": null,
-  "poolAddress": "0x3416cF6C708Da44DB2624D63ea0AAef7113527C6"
+  "poolAddress": "0x3416cF6C708Da44DB2624D63ea0AAef7113527C6",
+  "fileFormat": "json"
+}
+\`\`\`
+
+Input:
+"Export all swaps from pool 0xC31E54c7a869B9FcBEcc14363CF510d1c41fa443 between blocks 290000000 and 290050000 as json file"
+
+Output:
+\`\`\`json
+{
+  "startBlock": 290000000,
+  "endBlock": 290050000,
+  "poolAddress": "0xC31E54c7a869B9FcBEcc14363CF510d1c41fa443",
+  "fileFormat": "json"
 }
 \`\`\`
 
@@ -45,7 +61,8 @@ Output:
 {
   "startBlock": null,
   "endBlock": 290008000,
-  "poolAddress": null
+  "poolAddress": null,
+  "fileFormat": null
 }
 \`\`\`
 

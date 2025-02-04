@@ -8,15 +8,16 @@ export interface Erc20Metadata {
     symbol: string;
 }
 
-export const Erc20TransferParamsSchema = z.object({
+export const erc20TransferParamsSchema = z.object({
     startBlock: z.number().nullable(),
     endBlock: z.number().nullable(),
     from: z.string().nullable(),
     to: z.string().nullable(),
     contractAddress: z.string().nullable(),
+    fileFormat: z.enum(["json"]).optional().nullable(),
 });
 
-export type Erc20TransferParams = z.infer<typeof Erc20TransferParamsSchema>;
+export type Erc20TransferParams = z.infer<typeof erc20TransferParamsSchema>;
 
 export interface Account {
     address: Address;

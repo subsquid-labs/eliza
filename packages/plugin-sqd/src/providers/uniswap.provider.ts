@@ -35,7 +35,6 @@ class UniswapProvider implements Provider {
                 "[Uniswap Swaps Provider]: Found error while parsing parameters",
                 error
             );
-            throw error;
         }
     }
 
@@ -52,15 +51,10 @@ class UniswapProvider implements Provider {
             };
             return UniswapSwapParamsSchema.parse(config);
         } catch (error) {
-            if (error instanceof z.ZodError) {
-                const errorMessages = error.errors
-                    .map((err) => `${err.path.join(".")}: ${err.message}`)
-                    .join("\n");
-                throw new Error(
-                    `Uniswap configuration validation failed:\n${errorMessages}`
-                );
-            }
-            throw error;
+            elizaLogger.debug(
+                "[Uniswap Swaps Provider]: Validation error",
+                error
+            );
         }
     }
 

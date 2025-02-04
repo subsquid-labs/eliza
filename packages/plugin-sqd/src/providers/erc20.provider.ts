@@ -8,7 +8,6 @@ import {
 import { getAddress } from "viem";
 import { Erc20TransferParams, erc20TransferParamsSchema } from "../types";
 import { Erc20JellyfishService, Erc20Transfer } from "../services";
-import { z } from "zod";
 
 /**
  * Provider that retrieves ERC20 transfer data based on environment variables
@@ -19,8 +18,6 @@ class Erc20Provider implements Provider {
         _message: Memory,
         _state?: State
     ): Promise<string> {
-        console.log("THIS IS NOT RUNNING!!!!");
-
         try {
             const queryParams = await this.getParams(runtime);
             const validatedParams = this.validateQueryParams(queryParams);
@@ -37,7 +34,6 @@ class Erc20Provider implements Provider {
                 "[ERC20 Transfer Provider]: Found error while parsing parameters",
                 error
             );
-            throw error;
         }
     }
 
@@ -58,15 +54,10 @@ class Erc20Provider implements Provider {
             };
             return erc20TransferParamsSchema.parse(config);
         } catch (error) {
-            if (error instanceof z.ZodError) {
-                const errorMessages = error.errors
-                    .map((err) => `${err.path.join(".")}: ${err.message}`)
-                    .join("\n");
-                throw new Error(
-                    `ERC20 configuration validation failed:\n${errorMessages}`
-                );
-            }
-            throw error;
+            elizaLogger.debug(
+                "[ERC20 Transfer Provider]: Validation error",
+                error
+            );
         }
     }
 

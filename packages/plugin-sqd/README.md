@@ -1,3 +1,5 @@
+<img src="assets/sqd.png" width="700" alt="Subsquid Plugin Banner">
+
 # @elizaos/plugin-sqd
 
 A plugin that provides on-chain data lake capabilities for AI agents in the elizaos ecosystem.
@@ -19,7 +21,7 @@ The plugin implements two complementary approaches to data access:
 
 1. **Providers**: Simple, environment-variable driven data providers that fetch data based on predefined settings. Useful for continuous monitoring or when parameters are known in advance.
 
-2. **Actions**: More sophisticated handlers that can parse natural language queries, extract parameters, and offer additional features like JSON file output. Ideal for interactive queries and data analysis.
+2. **Actions**: More sophisticated handlers that can parse natural language queries, extract parameters, and offer additional features like JSON file output. Ideal for interactive queries.
 
 ## Features
 
@@ -96,10 +98,9 @@ interface Swap {
 ### Plugin Configuration
 
 ```json
+// In your character file add the sqd plugin to the plugins list
 {
-    "plugins": ["@elizaos/plugin-sqd"],
-    // Add the providers you want to use or leave empty to use all
-    "providers": ["erc20Provider", "uniswapProvider"]
+    "plugins": ["@elizaos/plugin-sqd"]
 }
 ```
 

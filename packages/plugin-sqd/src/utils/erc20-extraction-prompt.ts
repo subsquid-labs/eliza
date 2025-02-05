@@ -31,21 +31,6 @@ Output:
 \`\`\`
 
 Input:
-"Find all the transfer for the token 0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9 between the blocks 290000000 and 290010000 and give me in a json file"
-
-Output:
-\`\`\`json
-{
-  "startBlock": 290000000,
-  "endBlock": 290010000,
-  "from": null,
-  "to": null,
-  "contractAddress": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
-  "fileFormat": "json"
-}
-\`\`\`
-
-Input:
 "I want to see all DAI (0x6B175474E89094C44Da98b954EedeAC495271d0F) transfers from 0xAAA000111222333444555666777888999000AAA000 to 0xBBB111222333444555666777888999000BBB111 starting from block 290005000."
 
 Output:
@@ -87,6 +72,21 @@ Output:
   "to": "0xD4E5F6A1B2C3D4E5F6A1B2C3D4E5F6A1B2C3D4E5",
   "contractAddress": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2",
   "fileFormat": null
+}
+\`\`\`
+
+Input:
+"Find all the transfer for the token 0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9 between the blocks 290000000 and 290010000 and give me in a json file"
+
+Output:
+\`\`\`json
+{
+  "startBlock": 290000000,
+  "endBlock": 290010000,
+  "from": null,
+  "to": null,
+  "contractAddress": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9",
+  "fileFormat": "json"
 }
 \`\`\`
 

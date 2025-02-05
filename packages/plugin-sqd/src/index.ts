@@ -8,6 +8,13 @@ import { getUniswapSwapsAction } from "./actions/uniswap/uniswap.action";
     return this.toString();
 };
 
+export {
+    erc20Provider,
+    uniswapProvider,
+    getErc20TransfersAction,
+    getUniswapSwapsAction,
+};
+
 export const sqdPlugin: Plugin = {
     name: "SQD",
     description: "On-chain data lake for AI agents",

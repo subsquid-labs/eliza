@@ -10,7 +10,7 @@ Rules:
 1. Output only the JSON object with the specified keys.
 2. Use null for missing or unclear information.
 3. Do not include additional keys or text outside the JSON object.
-4. Response with an empty object if the prompt is unrelated to Uniswap swaps
+4. Only return the filled JSON object if you're sure the request is about Uniswap swaps. Otherwise, return an empty object.
 
 Examples:
 

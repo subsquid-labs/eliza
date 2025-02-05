@@ -1,3 +1,5 @@
+# Using @elizaos/plugin-sqd
+
 1. First, clone the repo at https://github.com/subsquid-labs/eliza
     - `git clone git@github.com:subsquid-labs/eliza.git`
 2. Make sure you're in the branch `feat/sqd-plugin`. This is the default branch of this repo, you should be fine

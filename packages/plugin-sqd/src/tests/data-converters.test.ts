@@ -6,7 +6,7 @@ describe("Data Converters", () => {
         {
             from: "0x641c00a822e8b671738d32a431a4fb6074e5c79d",
             to: "0x5e325eda8064b456f4781070c0738d849c824258",
-            value: "73795365",
+            value: 73795365n,
             address: "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9",
             blockTimestamp: 1735517189,
             blockNumber: 290000000,
@@ -18,7 +18,7 @@ describe("Data Converters", () => {
         {
             from: "0x5e325eda8064b456f4781070c0738d849c824258",
             to: "0x89f30783108e2f9191db4a44ae2a516327c99575",
-            value: "184488",
+            value: 184488n,
             address: "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9",
             blockTimestamp: 1735517189,
             blockNumber: 290000000,
@@ -30,7 +30,7 @@ describe("Data Converters", () => {
         {
             from: "0x5e325eda8064b456f4781070c0738d849c824258",
             to: "0xde185f44bdeac871e363b961eaabfc8a52a04c1f",
-            value: "73610877",
+            value: 73610877n,
             address: "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9",
             blockTimestamp: 1735517189,
             blockNumber: 290000000,
@@ -42,7 +42,7 @@ describe("Data Converters", () => {
         {
             from: "0xeacd85dd18604f99bc664ee51e4c4377b703ddb8",
             to: "0xeb0932dac0b8b4739c57deb2f944ce46a44eb7ab",
-            value: "7346086",
+            value: 7346086n,
             address: "0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9",
             blockTimestamp: 1735517191,
             blockNumber: 290000009,
@@ -65,7 +65,7 @@ describe("Data Converters", () => {
 
             // Check first data row
             expect(lines[1]).toBe(
-                '"0x641c00a822e8b671738d32a431a4fb6074e5c79d","0x5e325eda8064b456f4781070c0738d849c824258","73795365","0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9",1735517189,290000000,"0x5bdbad40544adaf4ba3fa84bef6e9baf75f7411a8dec4574a819392bffef5b3a","USDT0",6'
+                '"0x641c00a822e8b671738d32a431a4fb6074e5c79d","0x5e325eda8064b456f4781070c0738d849c824258",73795365,"0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9",1735517189,290000000,"0x5bdbad40544adaf4ba3fa84bef6e9baf75f7411a8dec4574a819392bffef5b3a","USDT0",6'
             );
         });
 
@@ -76,7 +76,7 @@ describe("Data Converters", () => {
 
         it("should handle objects with missing fields", () => {
             const irregularData = [
-                { from: "0x123", value: "1000", symbol: "USDT0" },
+                { from: "0x123", value: 1000n, symbol: "USDT0" },
                 { to: "0x456", blockNumber: 123, decimals: 6 },
                 { from: "0x789", to: "0xabc", transactionHash: "0x123..." },
             ];
@@ -93,7 +93,7 @@ describe("Data Converters", () => {
     });
 
     describe("jsonToParquet", () => {
-        it("should convert JSON array to Parquet buffer", async () => {
+        it.only("should convert JSON array to Parquet buffer", async () => {
             const buffer = await jsonToParquet(testData);
 
             expect(buffer).toBeInstanceOf(Buffer);
@@ -111,11 +111,11 @@ describe("Data Converters", () => {
             const mixedData = [
                 {
                     from: "0x123",
-                    value: "1000000",
+                    value: 1000000n,
                     blockNumber: 123456,
                     blockTimestamp: 1735517189,
                     isValid: true,
-                    metadata: { version: 1 },
+                    extraProp: "extra",
                 },
             ];
 

@@ -1,8 +1,5 @@
 import { Parser, type Options } from "json2csv";
 import * as parquet from "@dsnp/parquetjs";
-import { tmpdir } from "os";
-import { join } from "path";
-import { readFileSync, unlinkSync } from "fs";
 
 /**
  * Creates a Parquet schema from a sample object
@@ -27,6 +24,10 @@ function createParquetSchema(
                     fields[key] =
                         parquet.ParquetFieldBuilder.createBooleanField();
                     break;
+                case "bigint":
+                    fields[key] =
+                        parquet.ParquetFieldBuilder.createStringField();
+                    break;
                 default:
                     fields[key] =
                         parquet.ParquetFieldBuilder.createStringField();
@@ -41,7 +42,7 @@ function createParquetSchema(
 }
 
 /**
- * Converts JSON data to Parquet format
+ * Converts JSON data to Parquet format using streaming for better performance with large datasets
  * @param jsonData Array of JSON objects to convert
  * @returns Promise that resolves with the Parquet data as Buffer
  */
@@ -52,27 +53,37 @@ export async function jsonToParquet(
         return Buffer.from([]);
     }
 
-    const tmpFile = join(tmpdir(), `tmp-${Date.now()}.parquet`);
-
-    try {
+    return new Promise((resolve, reject) => {
+        const chunks: Buffer[] = [];
         const schema = createParquetSchema(jsonData[0]);
-        const writer = await parquet.ParquetWriter.openFile(schema, tmpFile);
 
-        writer.setRowGroupSize(8192);
-        await Promise.all(jsonData.map((row) => writer.appendRow(row)));
-        await writer.close();
+        const transformer = new parquet.ParquetTransformer(schema, {
+            rowGroupSize: 10000,
+            useDataPageV2: true,
+        });
 
-        const buffer = readFileSync(tmpFile);
-        return buffer;
-    } catch (error) {
-        throw new Error(`Failed to convert JSON to Parquet: ${error.message}`);
-    } finally {
-        try {
-            unlinkSync(tmpFile);
-        } catch {
-            // Ignore cleanup errors
+        transformer.on("data", (chunk: Buffer) => chunks.push(chunk));
+        transformer.on("end", () => resolve(Buffer.concat(chunks)));
+        transformer.on("error", (err) =>
+            reject(
+                new Error(`Failed to convert JSON to Parquet: ${err.message}`)
+            )
+        );
+
+        for (const row of jsonData) {
+            const processedRow = Object.entries(row).reduce(
+                (acc, [key, value]) => ({
+                    ...acc,
+                    [key]: typeof value === "bigint" ? value.toString() : value,
+                }),
+                {} as Record<string, any>
+            );
+
+            transformer.write(processedRow);
         }
-    }
+
+        transformer.end();
+    });
 }
 
 /**

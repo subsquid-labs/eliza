@@ -14,7 +14,7 @@ import { Erc20TransferParams, erc20TransferParamsSchema } from "../../types";
 import { Erc20JellyfishService, Erc20Transfer } from "../../services";
 import { generateObject, ModelClass } from "@elizaos/core";
 import { erc20Examples } from "./examples";
-import { saveJsonFile } from "../../utils";
+import { getConfigParams, handleFileOutput, saveFile } from "../../utils";
 
 interface GetErc20TransfersContent extends Content {
     text: string;
@@ -77,17 +77,22 @@ export class GetErc20TransfersAction implements Action {
             const queryParams = this.validateQueryParams(
                 messageContent.params!
             );
+            const { portalUrl, rpcUrl } = getConfigParams(_runtime);
 
             elizaLogger.debug("ERC20 Query params", queryParams);
 
-            const transfers = await new Erc20JellyfishService().fetchData(
-                queryParams
-            );
+            const transfers = await new Erc20JellyfishService(
+                portalUrl,
+                rpcUrl
+            ).fetchData(queryParams);
 
             if (callback) {
                 callback({
                     text: queryParams.fileFormat
-                        ? this.handleFileOutput(transfers)
+                        ? await this.handleFileOutput(
+                              transfers,
+                              queryParams.fileFormat
+                          )
                         : this.formatOutput(transfers, queryParams),
                     success: true,
                     params: queryParams,
@@ -123,8 +128,15 @@ export class GetErc20TransfersAction implements Action {
         }
     }
 
-    private handleFileOutput(transfers: Erc20Transfer[]): string {
-        const filePath = saveJsonFile(transfers, "erc20transfer");
+    private async handleFileOutput(
+        transfers: Erc20Transfer[],
+        fileFormat: "json" | "csv" | "parquet"
+    ): Promise<string> {
+        const filePath = await handleFileOutput(
+            transfers,
+            "erc20transfer",
+            fileFormat
+        );
         return `Your ERC20 transfers data has been saved to: ${filePath}`;
     }
 

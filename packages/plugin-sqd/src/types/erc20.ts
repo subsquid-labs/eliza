@@ -14,7 +14,7 @@ export const erc20TransferParamsSchema = z.object({
     from: z.string().nullable(),
     to: z.string().nullable(),
     contractAddress: z.string().nullable(),
-    fileFormat: z.enum(["json"]).optional().nullable(),
+    fileFormat: z.enum(["json", "csv", "parquet"]).optional().nullable(),
 });
 
 export type Erc20TransferParams = z.infer<typeof erc20TransferParamsSchema>;

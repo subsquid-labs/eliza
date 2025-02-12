@@ -81,16 +81,19 @@ export class GetUniswapSwapsAction implements Action {
 
             elizaLogger.debug("Uniswap Query params", queryParams);
 
-const { portalUrl, rpcUrl } = getConfigParams(_runtime);
+            const { portalUrl, rpcUrl } = getConfigParams(_runtime);
             const swaps = await new UniswapJellyfishService(
                 portalUrl,
                 rpcUrl
-).fetchData(queryParams);
+            ).fetchData(queryParams);
 
             if (callback) {
                 callback({
                     text: queryParams.fileFormat
-                        ? this.handleFileOutput(swaps)
+                        ? await this.handleFileOutput(
+                              swaps,
+                              queryParams.fileFormat
+                          )
                         : this.formatOutput(swaps, queryParams),
                     success: true,
                     params: queryParams,
@@ -126,8 +129,15 @@ const { portalUrl, rpcUrl } = getConfigParams(_runtime);
         }
     }
 
-    private handleFileOutput(swaps: Swap[]): string {
-        const filePath = saveJsonFile(swaps, "uniswap-swaps");
+    private async handleFileOutput(
+        swaps: Swap[],
+        fileFormat: "json" | "csv" | "parquet"
+    ): Promise<string> {
+        const filePath = await handleFileOutput(
+            swaps,
+            "uniswap-swaps",
+            fileFormat
+        );
         return `Your Uniswap swaps data has been saved to: ${filePath}`;
     }
 

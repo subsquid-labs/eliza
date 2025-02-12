@@ -27,11 +27,15 @@ interface BlockData {
     };
     // TODO: change name to swap in the jellyfish
     transfers: SwapEvent[];
+    transactions: {
+        hash: string;
+    }[];
 }
 
 export interface Swap extends SwapEvent {
     address: Address;
     poolName: string;
+    transactionHash: string;
 }
 
 export class UniswapJellyfishService extends BaseJellyfishService<
@@ -39,6 +43,9 @@ export class UniswapJellyfishService extends BaseJellyfishService<
     Swap[]
 > {
     private static readonly FIELDS: SwapFieldSelection = {
+        transaction: {
+            hash: true,
+        },
         block: {
             timestamp: true,
             hash: true,
@@ -67,6 +74,7 @@ export class UniswapJellyfishService extends BaseJellyfishService<
             swaps: [
                 {
                     address: [params.poolAddress],
+                    transaction: true,
                 },
             ],
         };
@@ -116,6 +124,7 @@ export class UniswapJellyfishService extends BaseJellyfishService<
         const swaps = block.transfers.map((swap) => ({
             ...swap,
             address: swap.address as Address,
+            transactionHash: block.transactions[0].hash,
             poolName: `${poolTokens.token0?.symbol}/${poolTokens.token1?.symbol}`,
         }));
 

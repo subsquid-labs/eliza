@@ -6,7 +6,7 @@ export abstract class BaseJellyfishService<FetchParams, FetchResponse> {
     private static readonly MIN_BYTES = 1 * 1024 * 1024;
     private static readonly RETRY_ATTEMPTS = 3;
 
-    constructor(private portalUrl: string) {}
+    constructor(protected portalUrl: string) {}
 
     public abstract fetchData(params: FetchParams): Promise<FetchResponse>;
 

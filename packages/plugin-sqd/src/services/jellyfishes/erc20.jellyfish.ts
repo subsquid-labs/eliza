@@ -117,16 +117,18 @@ export class Erc20JellyfishService extends BaseJellyfishService<
         block: BlockData,
         erc20Metadata: Erc20MetadataMap
     ): Promise<Erc20Transfer[]> {
-        return block.transfers.map((transfer) => ({
-            from: transfer.from as Address,
-            to: transfer.to as Address,
-            value: transfer.value,
-            address: transfer.address,
-            blockTimestamp: block.header.timestamp,
-            blockNumber: block.header.number,
-            transactionHash: block.header.hash,
-            ...erc20Metadata.get(transfer.address as Address),
-        }));
+        return block.transfers
+            .filter((transfer) => transfer)
+            .map((transfer) => ({
+                from: transfer.from as Address,
+                to: transfer.to as Address,
+                value: transfer.value,
+                address: transfer.address,
+                blockTimestamp: block.header.timestamp,
+                blockNumber: block.header.number,
+                transactionHash: block.header.hash,
+                ...erc20Metadata.get(transfer.address as Address),
+            }));
     }
 
     private filterBlock(block: BlockData): boolean {

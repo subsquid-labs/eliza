@@ -21,6 +21,21 @@ class Erc20Provider implements Provider {
     ): Promise<string> {
         try {
             const queryParams = this.getExtractionParams(runtime);
+
+            // Check if all parameters are null/undefined
+            if (
+                !queryParams.startBlock &&
+                !queryParams.endBlock &&
+                !queryParams.from &&
+                !queryParams.to &&
+                !queryParams.contractAddress
+            ) {
+                elizaLogger.debug(
+                    "[ERC20 Transfer Provider]: Skipping execution - no parameters were set"
+                );
+                return null;
+            }
+
             const { portalUrl, rpcUrl } = getConfigParams(runtime);
             const validatedParams = this.validateQueryParams(queryParams);
 

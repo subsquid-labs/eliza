@@ -21,6 +21,19 @@ class UniswapProvider implements Provider {
     ): Promise<string> {
         try {
             const queryParams = await this.getParams(runtime);
+
+            // Check if all parameters are null/undefined
+            if (
+                !queryParams.startBlock &&
+                !queryParams.endBlock &&
+                !queryParams.poolAddress
+            ) {
+                elizaLogger.debug(
+                    "[Uniswap Swaps Provider]: Skipping execution - no parameters were set"
+                );
+                return null;
+            }
+
             const validatedParams = this.validateQueryParams(queryParams);
             const { portalUrl, rpcUrl } = getConfigParams(runtime);
 

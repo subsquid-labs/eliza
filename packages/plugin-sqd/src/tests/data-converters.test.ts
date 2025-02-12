@@ -93,7 +93,7 @@ describe("Data Converters", () => {
     });
 
     describe("jsonToParquet", () => {
-        it.only("should convert JSON array to Parquet buffer", async () => {
+        it("should convert JSON array to Parquet buffer", async () => {
             const buffer = await jsonToParquet(testData);
 
             expect(buffer).toBeInstanceOf(Buffer);

@@ -58,9 +58,9 @@ export class GetErc20TransfersAction implements Action {
 
             return true;
         } catch (error) {
-            elizaLogger.error("Validation failed for GET_ERC20_TRANSFERS", {
-                error: error instanceof Error ? error.message : String(error),
-            });
+            elizaLogger.debug(
+                "[GET_ERC20_TRANSFERS] No ERC20 transfer parameters identified in the current query"
+            );
             return false;
         }
     }

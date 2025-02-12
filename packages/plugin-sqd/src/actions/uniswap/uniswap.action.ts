@@ -58,9 +58,9 @@ export class GetUniswapSwapsAction implements Action {
 
             return true;
         } catch (error) {
-            elizaLogger.error("Validation failed for GET_UNISWAP_SWAPS", {
-                error: error instanceof Error ? error.message : String(error),
-            });
+            elizaLogger.debug(
+                "[GET_UNISWAP_SWAPS] No Uniswap swap parameters identified in the current query"
+            );
             return false;
         }
     }
@@ -178,6 +178,7 @@ export class GetUniswapSwapsAction implements Action {
                 `  Sender: ${swap.sender}`,
                 `  Recipient: ${swap.recipient}`,
                 `  Tick: ${swap.tick}`,
+                `  Transaction Hash: ${swap.transactionHash}`,
             ];
             return lines.join("\n");
         });

@@ -14,7 +14,7 @@ import { UniswapSwapParams, UniswapSwapParamsSchema } from "../../types";
 import { Swap, UniswapJellyfishService } from "../../services";
 import { generateObject, ModelClass } from "@elizaos/core";
 import { uniswapExamples } from "./examples";
-import { saveJsonFile } from "../../utils";
+import { getConfigParams, handleFileOutput } from "../../utils";
 
 interface GetUniswapSwapsContent extends Content {
     text: string;
@@ -81,9 +81,11 @@ export class GetUniswapSwapsAction implements Action {
 
             elizaLogger.debug("Uniswap Query params", queryParams);
 
-            const swaps = await new UniswapJellyfishService().fetchData(
-                queryParams
-            );
+const { portalUrl, rpcUrl } = getConfigParams(_runtime);
+            const swaps = await new UniswapJellyfishService(
+                portalUrl,
+                rpcUrl
+).fetchData(queryParams);
 
             if (callback) {
                 callback({

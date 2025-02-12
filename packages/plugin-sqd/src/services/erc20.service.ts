@@ -9,10 +9,11 @@ import {
 import { DefillamaService } from "./defillama.service";
 import { Erc20Metadata, Erc20MetadataMap, Account } from "../types";
 
-import { ARBITRUM_RPC_URL } from "../config/constants";
-
 export class Erc20Service {
-    constructor(private defillamaService: DefillamaService) {}
+    constructor(
+        private rpcUrl: string,
+        private defillamaService: DefillamaService
+    ) {}
 
     public async getErc20Info(tokens: Account[]): Promise<Erc20MetadataMap> {
         const defillamaResponse = await this.defillamaService.getTokenInfo(
@@ -130,7 +131,7 @@ export class Erc20Service {
     private getClient(chain: Chain) {
         return createPublicClient({
             chain,
-            transport: http(ARBITRUM_RPC_URL),
+            transport: http(this.rpcUrl),
         });
     }
 }

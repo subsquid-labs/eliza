@@ -2,7 +2,6 @@ import { arbitrum } from "viem/chains";
 import { Erc20 } from "../types";
 import { DefillamaService } from "./defillama.service";
 import { Address, createPublicClient, getAddress, http } from "viem";
-import { ARBITRUM_RPC_URL } from "../config/constants";
 import uniswapV3PoolAbi from "../abis/uniswap-v3-pool.json";
 import { Erc20Service } from "./erc20.service";
 
@@ -12,8 +11,8 @@ import { Erc20Service } from "./erc20.service";
 export class UniswapService {
     private erc20Service: Erc20Service;
 
-    constructor() {
-        this.erc20Service = new Erc20Service(new DefillamaService());
+    constructor(private rpcUrl: string) {
+        this.erc20Service = new Erc20Service(rpcUrl, new DefillamaService());
     }
 
     public async getPoolTokens(
@@ -63,7 +62,7 @@ export class UniswapService {
         return createPublicClient({
             // TODO: once we include support for other chains, we should make this dynamic
             chain: arbitrum,
-            transport: http(ARBITRUM_RPC_URL),
+            transport: http(this.rpcUrl),
         });
     }
 

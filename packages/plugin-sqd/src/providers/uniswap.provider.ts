@@ -8,7 +8,7 @@ import {
 import { UniswapSwapParams, UniswapSwapParamsSchema } from "../types";
 import { Swap, UniswapJellyfishService } from "../services";
 import { getAddress } from "viem";
-import { z } from "zod";
+import { getConfigParams } from "../utils";
 
 /**
  * Provider that retrieves Uniswap swap data based on runtime settings
@@ -22,12 +22,14 @@ class UniswapProvider implements Provider {
         try {
             const queryParams = await this.getParams(runtime);
             const validatedParams = this.validateQueryParams(queryParams);
+            const { portalUrl, rpcUrl } = getConfigParams(runtime);
 
             elizaLogger.debug("Uniswap Query params", validatedParams);
 
-            const swaps = await new UniswapJellyfishService().fetchData(
-                validatedParams
-            );
+            const swaps = await new UniswapJellyfishService(
+                portalUrl,
+                rpcUrl
+            ).fetchData(validatedParams);
 
             return this.formatOutput(swaps, validatedParams);
         } catch (error) {

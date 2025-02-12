@@ -56,9 +56,9 @@ export class Erc20JellyfishService extends BaseJellyfishService<
         },
     };
 
-    constructor() {
-        super();
-        this.erc20Service = new Erc20Service(new DefillamaService());
+    constructor(portalUrl: string, rpcUrl: string) {
+        super(portalUrl);
+        this.erc20Service = new Erc20Service(rpcUrl, new DefillamaService());
     }
 
     public async fetchData(

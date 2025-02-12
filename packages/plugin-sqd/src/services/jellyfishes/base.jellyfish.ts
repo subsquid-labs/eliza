@@ -3,10 +3,10 @@ import { PortalClient } from "@abernatskiy/portal-client";
 import { Readable } from "stream";
 
 export abstract class BaseJellyfishService<FetchParams, FetchResponse> {
-    private static readonly PORTAL_URL =
-        "https://portal.sqd.dev/datasets/arbitrum-one";
     private static readonly MIN_BYTES = 1 * 1024 * 1024;
     private static readonly RETRY_ATTEMPTS = 3;
+
+    constructor(private portalUrl: string) {}
 
     public abstract fetchData(params: FetchParams): Promise<FetchResponse>;
 
@@ -15,7 +15,7 @@ export abstract class BaseJellyfishService<FetchParams, FetchResponse> {
      */
     public get portalClient() {
         const portalClient = new PortalClient({
-            url: BaseJellyfishService.PORTAL_URL,
+            url: this.portalUrl,
             http: new HttpClient({
                 retryAttempts: BaseJellyfishService.RETRY_ATTEMPTS,
                 async fetch(input, init) {

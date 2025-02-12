@@ -8,6 +8,7 @@ import {
 import { getAddress } from "viem";
 import { Erc20TransferParams, erc20TransferParamsSchema } from "../types";
 import { Erc20JellyfishService, Erc20Transfer } from "../services";
+import { getConfigParams } from "../utils";
 
 /**
  * Provider that retrieves ERC20 transfer data based on environment variables
@@ -19,27 +20,27 @@ class Erc20Provider implements Provider {
         _state?: State
     ): Promise<string> {
         try {
-            const queryParams = await this.getParams(runtime);
+            const queryParams = this.getExtractionParams(runtime);
+            const { portalUrl, rpcUrl } = getConfigParams(runtime);
             const validatedParams = this.validateQueryParams(queryParams);
 
             elizaLogger.debug("ERC20 Query params", validatedParams);
 
-            const transfers = await new Erc20JellyfishService().fetchData(
-                validatedParams
-            );
+            const transfers = await new Erc20JellyfishService(
+                portalUrl,
+                rpcUrl
+            ).fetchData(validatedParams);
 
             return this.formatOutput(transfers, validatedParams);
         } catch (error) {
             elizaLogger.debug(
-                "[ERC20 Transfer Provider]: Found error while parsing parameters",
+                "[ERC20 Transfer Provider]: Found error while fetching data",
                 error
             );
         }
     }
 
-    private async getParams(
-        runtime: IAgentRuntime
-    ): Promise<Erc20TransferParams> {
+    private getExtractionParams(runtime: IAgentRuntime): Erc20TransferParams {
         try {
             const startBlock = runtime.getSetting("SQD_ERC20_START_BLOCK");
             const endBlock = runtime.getSetting("SQD_ERC20_END_BLOCK");

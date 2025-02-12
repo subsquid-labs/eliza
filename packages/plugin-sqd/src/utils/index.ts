@@ -18,3 +18,21 @@ export function saveJsonFile(jsonData: any, baseFileName: string): string {
 
     return filepath;
 }
+
+export function getConfigParams(runtime: IAgentRuntime): {
+    portalUrl: string;
+    rpcUrl: string;
+} {
+    const portalUrl = runtime.getSetting("SQD_PORTAL_URL");
+    if (!portalUrl) {
+        throw new Error("SQD_PORTAL_URL is not set");
+    }
+
+    const rpcUrl = runtime.getSetting("SQD_RPC_URL");
+    if (!rpcUrl) {
+        throw new Error("SQD_RPC_URL is not set");
+    }
+
+    return { portalUrl, rpcUrl };
+}
+

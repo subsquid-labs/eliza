@@ -57,9 +57,9 @@ export class UniswapJellyfishService extends BaseJellyfishService<
 
     private uniswapService: UniswapService;
 
-    constructor() {
-        super();
-        this.uniswapService = new UniswapService();
+    constructor(portalUrl: string, rpcUrl: string) {
+        super(portalUrl);
+        this.uniswapService = new UniswapService(rpcUrl);
     }
 
     public async fetchData(params: UniswapSwapParams): Promise<Swap[]> {

@@ -1,7 +1,5 @@
 import { ActionExample } from "@elizaos/core";
 
-// Find all the transfer for the token 0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9 between the blocks 290000000 and 290010000
-// Find all the transfer for the token 0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9 between the blocks 290000000 and 290010000 and give me in a json file
 export const erc20Examples: ActionExample[][] = [
     [
         {

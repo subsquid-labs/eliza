@@ -5,7 +5,6 @@ import type {
     State,
     HandlerCallback,
     Content,
-    ActionExample,
     Media,
 } from "@elizaos/core";
 import { getUniswapExtractionPrompt } from "../../utils/uniswap-extraction-prompt";

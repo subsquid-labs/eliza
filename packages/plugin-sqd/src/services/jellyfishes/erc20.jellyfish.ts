@@ -24,6 +24,9 @@ interface BlockData {
         timestamp: number;
     };
     transfers: TransferEvent[];
+    transactions: {
+        hash: string;
+    }[];
 }
 
 export interface Erc20Transfer extends TransferEvent {
@@ -43,6 +46,9 @@ export class Erc20JellyfishService extends BaseJellyfishService<
 > {
     private erc20Service: Erc20Service;
     private static readonly FIELDS: Erc20FieldSelection = {
+        transaction: {
+            hash: true,
+        },
         block: {
             timestamp: true,
             hash: true,
@@ -72,6 +78,7 @@ export class Erc20JellyfishService extends BaseJellyfishService<
                         : undefined,
                     from: params.from ? [params.from] : undefined,
                     to: params.to ? [params.to] : undefined,
+                    transaction: true,
                 },
             ],
         };
@@ -126,7 +133,7 @@ export class Erc20JellyfishService extends BaseJellyfishService<
                 address: transfer.address,
                 blockTimestamp: block.header.timestamp,
                 blockNumber: block.header.number,
-                transactionHash: block.header.hash,
+                transactionHash: block.transactions[0].hash,
                 ...erc20Metadata.get(transfer.address as Address),
             }));
     }

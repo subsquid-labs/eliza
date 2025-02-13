@@ -143,28 +143,31 @@ export function parseJSONObjectFromText(
     text: string
 ): Record<string, any> | null {
     let jsonData = null;
-
     const jsonBlockMatch = text.match(jsonBlockPattern);
 
     if (jsonBlockMatch) {
+        text = cleanJsonResponse(text);
+        const parsingText = normalizeJsonString(text);
         try {
-            jsonData = JSON.parse(jsonBlockMatch[1]);
+            jsonData = JSON.parse(parsingText);
         } catch (e) {
             console.error("Error parsing JSON:", e);
             console.error("Text is not JSON", text);
-            return extractAttributes(jsonBlockMatch[1]);
+            return extractAttributes(text);
         }
     } else {
-        const objectPattern = /{[\s\S]*?}/;
+        const objectPattern = /{[\s\S]*?}?/;
         const objectMatch = text.match(objectPattern);
 
         if (objectMatch) {
+            text = cleanJsonResponse(text);
+            const parsingText = normalizeJsonString(text);
             try {
-                jsonData = JSON.parse(objectMatch[0]);
+                jsonData = JSON.parse(parsingText);
             } catch (e) {
                 console.error("Error parsing JSON:", e);
                 console.error("Text is not JSON", text);
-                return extractAttributes(objectMatch[0]);
+                return extractAttributes(text);
             }
         }
     }
@@ -192,11 +195,12 @@ export function extractAttributes(
     response: string,
     attributesToExtract?: string[]
 ): { [key: string]: string | undefined } {
+    response = response.trim();
     const attributes: { [key: string]: string | undefined } = {};
 
     if (!attributesToExtract || attributesToExtract.length === 0) {
         // Extract all attributes if no specific attributes are provided
-        const matches = response.matchAll(/"([^"]+)"\s*:\s*"([^"]*)"/g);
+        const matches = response.matchAll(/"([^"]+)"\s*:\s*"([^"]*)"?/g);
         for (const match of matches) {
             attributes[match[1]] = match[2];
         }
@@ -204,7 +208,7 @@ export function extractAttributes(
         // Extract only specified attributes
         attributesToExtract.forEach((attribute) => {
             const match = response.match(
-                new RegExp(`"${attribute}"\\s*:\\s*"([^"]*)"`, "i")
+                new RegExp(`"${attribute}"\\s*:\\s*"([^"]*)"?`, "i")
             );
             if (match) {
                 attributes[attribute] = match[1];
@@ -212,8 +216,47 @@ export function extractAttributes(
         });
     }
 
-    return attributes;
+    return Object.entries(attributes).length > 0 ? attributes : null;
 }
+
+/**
+ * Normalizes a JSON-like string by correcting formatting issues:
+ * - Removes extra spaces after '{' and before '}'.
+ * - Wraps unquoted values in double quotes.
+ * - Converts single-quoted values to double-quoted.
+ * - Ensures consistency in key-value formatting.
+ * - Normalizes mixed adjacent quote pairs.
+ *
+ * This is useful for cleaning up improperly formatted JSON strings
+ * before parsing them into valid JSON.
+ *
+ * @param str - The JSON-like string to normalize.
+ * @returns A properly formatted JSON string.
+ */
+
+export const normalizeJsonString = (str: string) => {
+    // Remove extra spaces after '{' and before '}'
+    str = str.replace(/\{\s+/, '{').replace(/\s+\}/, '}').trim();
+
+    // "key": unquotedValue → "key": "unquotedValue"
+    str = str.replace(
+      /("[\w\d_-]+")\s*: \s*(?!"|\[)([\s\S]+?)(?=(,\s*"|\}$))/g,
+      '$1: "$2"',
+    );
+
+    // "key": 'value' → "key": "value"
+    str = str.replace(
+      /"([^"]+)"\s*:\s*'([^']*)'/g,
+      (_, key, value) => `"${key}": "${value}"`,
+    );
+
+    // "key": someWord → "key": "someWord"
+    str = str.replace(/("[\w\d_-]+")\s*:\s*([A-Za-z_]+)(?!["\w])/g, '$1: "$2"');
+
+    // Replace adjacent quote pairs with a single double quote
+    str = str.replace(/(?:"')|(?:'")/g, '"');
+    return str;
+};
 
 /**
  * Cleans a JSON-like response string by removing unnecessary markers, line breaks, and extra whitespace.

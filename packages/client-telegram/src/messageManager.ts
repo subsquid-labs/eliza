@@ -195,11 +195,9 @@ export class MessageManager {
 
             // Check if we should post
             if (
-                timeSinceLastMessage >
-                    this.autoPostConfig.inactivityThreshold ||
-                (randomThreshold &&
-                    timeSinceLastAutoPost >
-                        (this.autoPostConfig.minTimeBetweenPosts || 0))
+                timeSinceLastMessage > randomThreshold &&
+                timeSinceLastAutoPost >
+                    (this.autoPostConfig.minTimeBetweenPosts || 0)
             ) {
                 try {
                     const roomId = stringToUuid(
@@ -258,7 +256,7 @@ export class MessageManager {
                     // Create and store memories
                     const memories = messages.map((m) => ({
                         id: stringToUuid(
-                            m.message_id.toString() + "-" + this.runtime.agentId
+                            roomId + "-" + m.message_id.toString()
                         ),
                         userId: this.runtime.agentId,
                         agentId: this.runtime.agentId,
@@ -384,9 +382,7 @@ export class MessageManager {
             );
 
             const memories = messages.map((m) => ({
-                id: stringToUuid(
-                    m.message_id.toString() + "-" + this.runtime.agentId
-                ),
+                id: stringToUuid(roomId + "-" + m.message_id.toString()),
                 userId: this.runtime.agentId,
                 agentId: this.runtime.agentId,
                 content: {
@@ -1264,7 +1260,7 @@ export class MessageManager {
 
             // Get message ID
             const messageId = stringToUuid(
-                message.message_id.toString() + "-" + this.runtime.agentId
+                roomId + "-" + message.message_id.toString()
             ) as UUID;
 
             // Handle images
@@ -1339,9 +1335,7 @@ export class MessageManager {
 
                         const memory: Memory = {
                             id: stringToUuid(
-                                sentMessage.message_id.toString() +
-                                    "-" +
-                                    this.runtime.agentId
+                                roomId + "-" + sentMessage.message_id.toString()
                             ),
                             agentId,
                             userId: agentId,
@@ -1389,8 +1383,27 @@ export class MessageManager {
 
                 if (!responseContent || !responseContent.text) return;
 
-                // Execute callback to send messages and log memories
-                const responseMessages = await callback(responseContent);
+                const action = this.runtime.actions.find((a) => a.name === responseContent.action);
+                const shouldSuppressInitialMessage = action?.suppressInitialMessage;
+
+                let responseMessages = [];
+
+                if (!shouldSuppressInitialMessage) {
+                    // Execute callback to send messages and log memories
+                    responseMessages = await callback(responseContent);
+                } else {
+                    responseMessages = [
+                        {
+                            id: stringToUuid(messageId + "-" + this.runtime.agentId),
+                            userId: this.runtime.agentId,
+                            agentId: this.runtime.agentId,
+                            content: responseContent,
+                            roomId,
+                            embedding: getEmbeddingZeroVector(),
+                            createdAt: Date.now(),
+                        }
+                    ]
+                }
 
                 // Update state after response
                 state = await this.runtime.updateRecentMessageState(state);

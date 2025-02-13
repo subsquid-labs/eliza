@@ -35,6 +35,7 @@ Available through both provider and action interfaces:
     -   From address
     -   To address
     -   Token contract address
+    -   File format (action only: json, csv, or parquet)
 
 Data structure:
 
@@ -60,6 +61,7 @@ Available through both provider and action interfaces:
     -   Start block
     -   End block
     -   Pool address
+    -   File format (action only: json, csv, or parquet)
 
 Data structure:
 
@@ -74,6 +76,7 @@ interface Swap {
     tick: number;
     address: string;
     poolName: string; // Format: "TOKEN0/TOKEN1"
+    transactionHash: string;
 }
 ```
 
@@ -81,7 +84,14 @@ interface Swap {
 
 ### Environment Variables
 
+#### Mandatory Variables
+
+-   `SQD_PORTAL_URL`: The URL of the Subsquid Portal service (check available endpoints at https://portal.sqd.dev/datasets)
+-   `SQD_RPC_URL`: The URL of the RPC endpoint matching the chain you want to query. Mostly used for fetching token metadata.
+
 #### ERC20 Provider Variables
+
+> Note: If none of these variables are set, the provider execution will be skipped.
 
 -   `SQD_ERC20_START_BLOCK`: Starting block number for transfer queries
 -   `SQD_ERC20_END_BLOCK`: Ending block number for transfer queries
@@ -90,6 +100,8 @@ interface Swap {
 -   `SQD_ERC20_CONTRACT_ADDRESS`: Filter transfers for specific token contract
 
 #### Uniswap Provider Variables
+
+> Note: If none of these variables are set, the provider execution will be skipped.
 
 -   `SQD_UNISWAP_START_BLOCK`: Starting block number for swap queries
 -   `SQD_UNISWAP_END_BLOCK`: Ending block number for swap queries
@@ -108,16 +120,34 @@ interface Swap {
 
 ### Using Actions
 
+For ERC20 transfers with text output:
+
+```
+Find the transfers between blocks 290000000 and 290010000 of the token 0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9
+```
+
 For ERC20 transfers with JSON output:
 
 ```
 Find the transfers between blocks 290000000 and 290010000 of the token 0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9 and save to json
 ```
 
-For Uniswap V3 swaps with JSON output:
+For ERC20 transfers with CSV output:
+
+```
+Find the transfers between blocks 290000000 and 290010000 of the token 0xfd086bc7cd5c481dcc9c85ebe478a1c0b69fcbb9 and save to csv
+```
+
+For Uniswap V3 swaps with text output:
 
 ```
 Get the swaps in the pool 0xC6962004f452bE9203591991D15f6b388e09E8D0 between blocks 300000000 and 300001000
+```
+
+For Uniswap V3 swaps with Parquet output:
+
+```
+Get the swaps in the pool 0xC6962004f452bE9203591991D15f6b388e09E8D0 between blocks 300000000 and 300001000 and save to parquet
 ```
 
 ### Using Providers
